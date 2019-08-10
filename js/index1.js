@@ -27,38 +27,50 @@ function inIframe() {
 			'#73A857'
 		];
 
-var quotes=[
-	// ["推薦的一部電影","alpha team"],
-	// ["最近最期待的一件事","alpha team"]
-];
-      var sliderPeople = document.getElementById("sliderPeople");
-      var outPeople = document.getElementById("outPeople");
-      var sliderTime = document.getElementById("sliderTime");
-      var outTime = document.getElementById("outTime");
+
+      // var sliderPeople = document.getElementById("sliderPeople");
+      // var outPeople = document.getElementById("outPeople");
+      // var sliderTime = document.getElementById("sliderTime");
+      // var outTime = document.getElementById("outTime");
 
       var timeFactor = "0";
 
-      outPeople.innerHTML = sliderPeople.value;
-      outTime.innerHTML = sliderTime.value;
-
-      var persons = 2;
-      var mins = 5 ;
-      sliderPeople.oninput = function() {
-        outPeople.innerHTML = this.value;
-        persons = parseInt(document.getElementById("sliderPeople").value);
-        timeFactor = Math.floor(mins/persons);
-      }
-      sliderTime.oninput = function() {
-        outTime.innerHTML = this.value;
-        mins = parseInt(document.getElementById("sliderTime").value);
-        timeFactor = Math.floor(mins/persons);
-      }
+      // outPeople.innerHTML = sliderPeople.value;
+      // outTime.innerHTML = sliderTime.value;
+      //
+      // var persons = 2;
+      // var mins = 5 ;
+      // sliderPeople.oninput = function() {
+      //   outPeople.innerHTML = this.value;
+      //   persons = parseInt(document.getElementById("sliderPeople").value);
+      //   timeFactor = Math.floor(mins/persons);
+      // }
+      // sliderTime.oninput = function() {
+      //   outTime.innerHTML = this.value;
+      //   mins = parseInt(document.getElementById("sliderTime").value);
+      //   timeFactor = Math.floor(mins/persons);
+      // }
 
 
      var topic = ["嗨，想聊些什麼？"];
      var group = ["這是問題分類"];
      var group2 = [""];
      var estTime = [""];
+     // var dislike = [""];
+     // var like = [""];
+     var cp = [""];
+     var no = [""];
+
+     var like = [""];
+     var dislike = [""];
+     var drawArray=[""];
+     var noArray=[""];
+
+     var randomquote = "";
+     var randomcolor = "";
+     var currentQuote = "";
+
+
 
      $.getJSON('https://spreadsheets.google.com/feeds/list/1_dTloIAxD4loWNOn3JeHcokU2uo5anzvjDKE3uCYmXs/od6/public/values?alt=json', function (data){
        // console.log(data.feed.entry[0]['gsx$topic']['$t']);
@@ -68,48 +80,105 @@ var quotes=[
             group[i] = data.feed.entry[i].gsx$group['$t'];
             group2[i] = data.feed.entry[i].gsx$group2['$t'];
             estTime[i]= data.feed.entry[i].gsx$time['$t'];
+            like[i]= data.feed.entry[i].gsx$like['$t'];
+            dislike[i]= data.feed.entry[i].gsx$dislike['$t'];
+            cp[i]= data.feed.entry[i].gsx$cp['$t'];
+            no[i]= data.feed.entry[i].gsx$no['$t'];
+
+            for (var j = 0; j < cp[i]; j++) {
+              drawArray.push(topic[i]);
+              noArray.push(no[i]);
+            }
       }
+      getQuote();
+      // console.log(drawArray);
       });
 
 
-var randomquote = "";
-var randomcolor = "";
+
+
+function pressDislike(){
+  var url='https://script.google.com/macros/s/AKfycbzjmC31RJi_ZsPCAhkGtnyXHjB8J_zbac2uvNqW1A/exec';
+  $.ajax({
+        url: url,
+        type: 'GET',
+        data:{
+          "like":0,
+          "dislike":dislike[randomquote],
+          "row":noArray[randomquote],
+          "column":9,
+          "action":"dislike"
+        },
+        success: function(res) {
+            // console.log(dislike[randomquote]);
+            // alert("Successfully submitted");
+        }
+    });
+    getQuote();
+}
+
+function pressLike(){
+  var url='https://script.google.com/macros/s/AKfycbzjmC31RJi_ZsPCAhkGtnyXHjB8J_zbac2uvNqW1A/exec';
+  $.ajax({
+        url: url,
+        type: 'GET',
+        data:{
+          "like":like[randomquote],
+          "dislike":0,
+          "row":noArray[randomquote],
+          "column":8,
+          "action":"like"
+        },
+        success: function(res) {
+            // alert("Successfully submitted");
+            Swal.fire({
+              type: 'success',
+              title: '讚啦，祝你有個愉快的缺應時光！',
+              showConfirmButton: false,
+              timer: 5000
+            })
+            setTimeout(function(){// wait for 5 secs(2)
+                location.reload(); // then reload the page.(3)
+           }, 2000);
+        }
+    });
+
+}
+
+
+
+
+
 
 function getQuote() {
-    console.log(timeFactor);
-  	randomcolor = Math.floor(Math.random() * colors.length);
-    randomquote = Math.floor(Math.random() * topic.length);
+    // console.log(timeFactor);
+  	// randomcolor = Math.floor(Math.random() * colors.length);
+    randomquote = Math.floor(Math.random() * drawArray.length);
 
-    if(timeFactor==0){
-      var currentQuote = "這是 Check In 資料庫";
-      var currentAuthor = "這是預估時間";
-      timeFactor = Math.floor(mins/persons);
-    }
-    else if(timeFactor<2){
-      currentQuote = "哎呀，看起來依照你們的人數和時間，現在並不適合check-in，你們要不要多留點時間呢？"
-      currentAuthor = "0" + " （min/人）";
-    }
-    else{
+    // if(timeFactor==10){
+    //   var currentQuote = "這是 Check In 資料庫";
+    //   var currentAuthor = "這是預估時間";
+    //   // timeFactor = Math.floor(mins/persons);
+    //   timeFactor = 1;
+    // }
+    // else if(timeFactor<0){
+    //   currentQuote = "哎呀，系統似乎出了點問題，請重新整理";
+    //   currentAuthor = "0" + " （min/人）";
+    // }
+    // else{
 
-      while (estTime[randomquote] > timeFactor) {
-        randomquote = Math.floor(Math.random() * topic.length);
-      }
+      // while (estTime[randomquote] > timeFactor) {
+      //   randomquote = Math.floor(Math.random() * topic.length);
+      // }
+      currentQuote = drawArray[randomquote];
+      console.log(currentQuote);
+      // currentAuthor = estTime[randomquote] + " （min/人）";
 
-      currentQuote = topic[randomquote];
-      currentAuthor = estTime[randomquote] + " （min/人）";
-
-    }
-
-
-
-    // if (estTime[randomquote] <= timeFactor || estTime[randomquote]=="?"){
-    //     currentQuote = topic[randomquote];
-    //     currentAuthor = estTime[randomquote] + " （min）";
     // }
 
-	// if (inIframe()) {
-	// 	$('#tweet-quote').attr('href', 'https://twitter.com/intent/tweet?hashtags=quotes&related=aLamm&text=' + encodeURIComponent('"' + currentQuote + '" ' + currentAuthor));
-	// }
+
+
+
 
 	$(document).ready(function () {
 	    $('html body').animate({
@@ -128,16 +197,20 @@ function getQuote() {
 	        $(this).text(currentAuthor);
 	    });
     });
+
+
+
 }
 
 function openURL(url) {
     window.open(url, 'Share', 'width=550, height=400, toolbar=0, scrollbars=1 ,location=0 ,statusbar=0,menubar=0, resizable=0');
 }
 
-getQuote();
 
 $(document).ready(function () {
     $('#newquote').on('click', getQuote);
+    $('#btnDislike').on('click', pressDislike);
+    $('#btnLike').on('click', pressLike);
     $('#tweetquote').on('click', function () {
         if (!inIframe()) {
             openURL('https://twitter.com/intent/tweet?hashtags=quotes&related=freecodecamp&text=' + encodeURIComponent('"' + currentQuote + '" ' + currentAuthor));
