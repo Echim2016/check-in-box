@@ -161,6 +161,7 @@ var getQuoteCount =0;
 function getQuote() {
   	// randomcolor = Math.floor(Math.random() * colors.length);
     getQuoteCount++;
+    currentText ="";
     randomquote = Math.floor(Math.random() * drawArray.length);
     // if(timeFactor==10){
     //   var currentQuote = "這是 Check In 資料庫";
@@ -187,7 +188,6 @@ function getQuote() {
 
       if (getQuoteCount == 30){
         currentQuote = "欸欸欸，挑太久了吧！！";
-        currentText ="";
       }
       else if(getQuoteCount == 45){
         currentQuote = topic[289];
