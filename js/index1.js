@@ -33,7 +33,7 @@ function inIframe() {
       // var sliderTime = document.getElementById("sliderTime");
       // var outTime = document.getElementById("outTime");
 
-      var timeFactor = "0";
+      // var timeFactor = "0";
 
       // outPeople.innerHTML = sliderPeople.value;
       // outTime.innerHTML = sliderTime.value;
@@ -55,43 +55,53 @@ function inIframe() {
      var topic = ["嗨，想聊些什麼？"];
      var group = ["這是問題分類"];
      var group2 = [""];
-     var estTime = [""];
+     // var estTime = [];
+
      // var dislike = [""];
      // var like = [""];
-     var cp = [""];
-     var no = [""];
+     var featured =[]
+     var weight = [];
+     var no = [];
+     var like = [];
+     var dislike = [];
 
-     var like = [""];
-     var dislike = [""];
-     var drawArray=[""];
-     var noArray=[""];
+     var drawArray=[];
+     var noArray=[];
+     var disArray=[];
+     var likeArray=[];
+     var featuredArray=[];
 
      var randomquote = "";
      var randomcolor = "";
      var currentQuote = "";
 
 
-
      $.getJSON('https://spreadsheets.google.com/feeds/list/1_dTloIAxD4loWNOn3JeHcokU2uo5anzvjDKE3uCYmXs/od6/public/values?alt=json', function (data){
-       // console.log(data.feed.entry[0]['gsx$topic']['$t']);
-       // console.log(data.feed.entry.length);
+
        for (var i = 0; i < data.feed.entry.length; i++){
             topic[i] = data.feed.entry[i].gsx$topic['$t'];
-            group[i] = data.feed.entry[i].gsx$group['$t'];
-            group2[i] = data.feed.entry[i].gsx$group2['$t'];
-            estTime[i]= data.feed.entry[i].gsx$time['$t'];
+            // group[i] = data.feed.entry[i].gsx$group['$t'];
+            // group2[i] = data.feed.entry[i].gsx$group2['$t'];
+            // estTime[i]= data.feed.entry[i].gsx$time['$t'];
+            featured[i]= data.feed.entry[i].gsx$featured['$t'];
             like[i]= data.feed.entry[i].gsx$like['$t'];
             dislike[i]= data.feed.entry[i].gsx$dislike['$t'];
-            cp[i]= data.feed.entry[i].gsx$cp['$t'];
+            weight[i]= data.feed.entry[i].gsx$weight['$t'];
             no[i]= data.feed.entry[i].gsx$no['$t'];
 
-            for (var j = 0; j < cp[i]; j++) {
+            for (var j = 0; j < weight[i]; j++) {
               drawArray.push(topic[i]);
               noArray.push(no[i]);
+              disArray.push(dislike[i]);
+              likeArray.push(like[i]);
+              featuredArray.push(featured[i]);
+
             }
       }
       getQuote();
+      // console.log(dislike);
       // console.log(drawArray);
+      // console.log(noArray);
       });
 
 
@@ -99,18 +109,20 @@ function inIframe() {
 
 function pressDislike(){
   var url='https://script.google.com/macros/s/AKfycbzjmC31RJi_ZsPCAhkGtnyXHjB8J_zbac2uvNqW1A/exec';
+  console.log(disArray[randomquote]);
+  console.log(randomquote);
+  console.log(noArray[randomquote]);
   $.ajax({
         url: url,
         type: 'GET',
         data:{
           "like":0,
-          "dislike":dislike[randomquote],
+          "dislike":disArray[randomquote],
           "row":noArray[randomquote],
           "column":9,
           "action":"dislike"
         },
         success: function(res) {
-            // console.log(dislike[randomquote]);
             // alert("Successfully submitted");
         }
     });
@@ -119,11 +131,14 @@ function pressDislike(){
 
 function pressLike(){
   var url='https://script.google.com/macros/s/AKfycbzjmC31RJi_ZsPCAhkGtnyXHjB8J_zbac2uvNqW1A/exec';
+  console.log(likeArray[randomquote]);
+  console.log(randomquote);
+  console.log(noArray[randomquote]);
   $.ajax({
         url: url,
         type: 'GET',
         data:{
-          "like":like[randomquote],
+          "like":likeArray[randomquote],
           "dislike":0,
           "row":noArray[randomquote],
           "column":8,
@@ -133,9 +148,9 @@ function pressLike(){
             // alert("Successfully submitted");
             Swal.fire({
               type: 'success',
-              title: '讚啦，祝你有個愉快的缺應時光！',
+              title: '讚啦，祝你有個愉快的Check-in時光！',
               showConfirmButton: false,
-              timer: 5000
+              timer: 6000
             })
             setTimeout(function(){// wait for 5 secs(2)
                 location.reload(); // then reload the page.(3)
@@ -146,13 +161,13 @@ function pressLike(){
 }
 
 
-
-
-
+var currentText = "";
+var getQuoteCount =0;
 
 function getQuote() {
     // console.log(timeFactor);
   	// randomcolor = Math.floor(Math.random() * colors.length);
+    getQuoteCount++;
     randomquote = Math.floor(Math.random() * drawArray.length);
 
     // if(timeFactor==10){
@@ -171,7 +186,18 @@ function getQuote() {
       //   randomquote = Math.floor(Math.random() * topic.length);
       // }
       currentQuote = drawArray[randomquote];
-      console.log(currentQuote);
+
+      if (getQuoteCount == 30){
+        currentQuote = "欸欸欸，挑太久了吧！";
+        getQuoteCount =0;
+      }
+
+      if(featured[randomquote]==3){
+        currentText = "本月編輯精選" ;
+      }
+      else if (featured[randomquote]==2) {
+        currentText = "歷久不衰系列"
+      }
       // currentAuthor = estTime[randomquote] + " （min/人）";
 
     // }
@@ -194,7 +220,7 @@ function getQuote() {
 	    });
 	    $('#quotesource').animate({ opacity: 0 }, 300, function () {
 	        $(this).animate({ opacity: 1 }, 500);
-	        $(this).text(currentAuthor);
+	        $(this).text(currentText);
 	    });
     });
 
