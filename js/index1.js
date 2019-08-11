@@ -165,6 +165,9 @@ function getQuote() {
     getQuoteCount++;
     currentText ="";
     randomquote = Math.floor(Math.random() * drawArray.length);
+    while(featuredArray[randomquote]==0.5){
+      randomquote = Math.floor(Math.random() * drawArray.length);
+    }
     // if(timeFactor==10){
     //   var currentQuote = "這是 Check In 資料庫";
     //   var currentAuthor = "這是預估時間";
