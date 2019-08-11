@@ -25,3 +25,25 @@ $('#submit-form').on('click', function(e) {
     }
   })
 })
+
+var resetClick =0;
+
+$('#reset-click').on('click',function(){
+
+  resetClick++;
+
+  if(resetClick==7){
+
+    Swal.fire({
+      type: 'success',
+      title: '很會點喔',
+      background: '#DCDCDC',
+      showConfirmButton: false,
+      timer: 1800
+    })
+
+    resetClick =0;
+  }
+
+
+})

@@ -5,7 +5,6 @@ function inIframe() {
         return true;
     }
 }
-
 		var colors = [
 			'#490A3D',
 			'#BD1550',
@@ -26,7 +25,6 @@ function inIframe() {
 			'#77B1A9',
 			'#73A857'
 		];
-
 
       // var sliderPeople = document.getElementById("sliderPeople");
       // var outPeople = document.getElementById("outPeople");
@@ -99,19 +97,15 @@ function inIframe() {
             }
       }
       getQuote();
-      // console.log(dislike);
-      // console.log(drawArray);
-      // console.log(noArray);
       });
-
 
 
 
 function pressDislike(){
   var url='https://script.google.com/macros/s/AKfycbzjmC31RJi_ZsPCAhkGtnyXHjB8J_zbac2uvNqW1A/exec';
-  console.log(disArray[randomquote]);
-  console.log(randomquote);
-  console.log(noArray[randomquote]);
+  // console.log(disArray[randomquote]);
+  // console.log(randomquote);
+  // console.log(noArray[randomquote]);
   $.ajax({
         url: url,
         type: 'GET',
@@ -165,11 +159,9 @@ var currentText = "";
 var getQuoteCount =0;
 
 function getQuote() {
-    // console.log(timeFactor);
   	// randomcolor = Math.floor(Math.random() * colors.length);
     getQuoteCount++;
     randomquote = Math.floor(Math.random() * drawArray.length);
-
     // if(timeFactor==10){
     //   var currentQuote = "這是 Check In 資料庫";
     //   var currentAuthor = "這是預估時間";
@@ -186,25 +178,25 @@ function getQuote() {
       //   randomquote = Math.floor(Math.random() * topic.length);
       // }
       currentQuote = drawArray[randomquote];
-
-      if (getQuoteCount == 30){
-        currentQuote = "欸欸欸，挑太久了吧！";
-        getQuoteCount =0;
-      }
-
       if(featured[randomquote]==3){
         currentText = "本月編輯精選" ;
       }
       else if (featured[randomquote]==2) {
         currentText = "歷久不衰系列"
       }
+
+      if (getQuoteCount == 30){
+        currentQuote = "欸欸欸，挑太久了吧！！";
+        currentText ="";
+      }
+      else if(getQuoteCount == 45){
+        currentQuote = topic[289];
+        randomquote = 0;
+        getQuoteCount = 0;
+      }
+
       // currentAuthor = estTime[randomquote] + " （min/人）";
-
     // }
-
-
-
-
 
 	$(document).ready(function () {
 	    $('html body').animate({
@@ -224,14 +216,11 @@ function getQuote() {
 	    });
     });
 
-
-
 }
 
 function openURL(url) {
     window.open(url, 'Share', 'width=550, height=400, toolbar=0, scrollbars=1 ,location=0 ,statusbar=0,menubar=0, resizable=0');
 }
-
 
 $(document).ready(function () {
     $('#newquote').on('click', getQuote);
