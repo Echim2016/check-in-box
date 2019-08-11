@@ -186,10 +186,10 @@ function getQuote() {
         currentText = "歷久不衰系列"
       }
 
-      if (getQuoteCount == 30){
+      if (getQuoteCount == 40){
         currentQuote = "欸欸欸，挑太久了吧！！";
       }
-      else if(getQuoteCount == 45){
+      else if(getQuoteCount == 50){
         currentQuote = topic[289];
         randomquote = 0;
         getQuoteCount = 0;
