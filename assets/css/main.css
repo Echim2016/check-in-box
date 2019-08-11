@@ -12,10 +12,10 @@
 
 #wordimg {
 
-	 max-width: 50%;
+	 max-width: 70%;
    max-height: auto;
    /*position: relative;*/
-   /*display: inline-block;*/
+   display: inline-block;
    /*overflow: hidden;*/
    margin: 0;
 

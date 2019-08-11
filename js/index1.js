@@ -228,6 +228,11 @@ function openURL(url) {
 }
 
 $(document).ready(function () {
+    setTimeout(function(){
+      // $('html,body').animate({scrollTop: $("#wordimg").offset().top},600);
+      $('html,body').animate({scrollTop: 200},600);
+
+    },1500)
     $('#newquote').on('click', getQuote);
     $('#btnDislike').on('click', pressDislike);
     $('#btnLike').on('click', pressLike);
