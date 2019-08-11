@@ -125,9 +125,9 @@ function pressDislike(){
 
 function pressLike(){
   var url='https://script.google.com/macros/s/AKfycbzjmC31RJi_ZsPCAhkGtnyXHjB8J_zbac2uvNqW1A/exec';
-  console.log(likeArray[randomquote]);
-  console.log(randomquote);
-  console.log(noArray[randomquote]);
+  // console.log(likeArray[randomquote]);
+  // console.log(randomquote);
+  // console.log(noArray[randomquote]);
   $.ajax({
         url: url,
         type: 'GET',
@@ -139,18 +139,20 @@ function pressLike(){
           "action":"like"
         },
         success: function(res) {
-            // alert("Successfully submitted");
-            Swal.fire({
-              type: 'success',
-              title: '讚啦，祝你有個愉快的Check-in時光！',
-              showConfirmButton: false,
-              timer: 6000
-            })
-            setTimeout(function(){// wait for 5 secs(2)
-                location.reload(); // then reload the page.(3)
-           }, 2000);
+
+           //  Swal.fire({
+           //    type: 'success',
+           //    title: '讚啦，祝你有個愉快的Check-in時光！',
+           //    showConfirmButton: false,
+           //    timer: 6000
+           //  })
+           //  setTimeout(function(){// wait for 5 secs(2)
+           //      location.reload(); // then reload the page.(3)
+           // }, 2000);
         }
     });
+    getQuote();
+
 
 }
 
