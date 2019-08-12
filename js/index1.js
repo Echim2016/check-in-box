@@ -69,9 +69,9 @@ function inIframe() {
      var likeArray=[];
      var featuredArray=[];
 
-     var randomquote = "";
+     var randomquote = 0;
      var randomcolor = "";
-     var currentQuote = "";
+     var currentQuote = "缺應讓你開心不尬聊，點擊「換一題」開始抽題！";
 
 
      $.getJSON('https://spreadsheets.google.com/feeds/list/1_dTloIAxD4loWNOn3JeHcokU2uo5anzvjDKE3uCYmXs/od6/public/values?alt=json', function (data){
@@ -96,7 +96,7 @@ function inIframe() {
 
             }
       }
-      getQuote();
+      // getQuote();
       });
 
 
@@ -216,7 +216,7 @@ function getQuote() {
 	        $(this).text(currentQuote);
 	    });
 	    $('#quotesource').animate({ opacity: 0 }, 300, function () {
-	        $(this).animate({ opacity: 1 }, 500);
+	        $(this).animate({ opacity: 0.7 }, 500);
 	        $(this).text(currentText);
 	    });
     });
@@ -229,10 +229,12 @@ function openURL(url) {
 
 $(document).ready(function () {
     setTimeout(function(){
-      // $('html,body').animate({scrollTop: $("#wordimg").offset().top},600);
       $('html,body').animate({scrollTop: 200},600);
-
     },1500)
+    $('#quotetext').animate({ opacity: 0 }, 800, function () {
+        $(this).animate({ opacity: 0.5 }, 500);
+        $(this).text(currentQuote);
+    });
     $('#newquote').on('click', getQuote);
     $('#btnDislike').on('click', pressDislike);
     $('#btnLike').on('click', pressLike);
