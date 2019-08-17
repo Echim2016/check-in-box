@@ -187,6 +187,9 @@ function getQuote() {
       if(featuredArray[randomquote]==3){
         currentText = "本月編輯精選" ;
       }
+      else if (featuredArray[randomquote]==4){
+        currentText = "精彩絕倫系列" ;
+      }
       else if (featuredArray[randomquote]==2) {
         currentText = "歷久不衰系列"
       }
