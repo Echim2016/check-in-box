@@ -74,30 +74,35 @@ function inIframe() {
      var currentQuote = "缺應讓你開心不尬聊，點擊「換一題」開始抽題！";
 
 
-     $.getJSON('https://spreadsheets.google.com/feeds/list/1_dTloIAxD4loWNOn3JeHcokU2uo5anzvjDKE3uCYmXs/od6/public/values?alt=json', function (data){
 
-       for (var i = 0; i < data.feed.entry.length; i++){
-            topic[i] = data.feed.entry[i].gsx$topic['$t'];
-            // group[i] = data.feed.entry[i].gsx$group['$t'];
-            // group2[i] = data.feed.entry[i].gsx$group2['$t'];
-            // estTime[i]= data.feed.entry[i].gsx$time['$t'];
-            featured[i]= data.feed.entry[i].gsx$featured['$t'];
-            like[i]= data.feed.entry[i].gsx$like['$t'];
-            dislike[i]= data.feed.entry[i].gsx$dislike['$t'];
-            weight[i]= data.feed.entry[i].gsx$weight['$t'];
-            no[i]= data.feed.entry[i].gsx$no['$t'];
+     var url = "https://sheets.googleapis.com/v4/spreadsheets/1_dTloIAxD4loWNOn3JeHcokU2uo5anzvjDKE3uCYmXs/values/check-in?key=AIzaSyC8QxEOSR2Yu1WuXehFeOY7kESmcVSpZsY"
+     $.getJSON(url, function(data) {
+       console.log(data.values);
+       console.log(data.values.length);
+        console.log(data.values[0]);
 
-            for (var j = 0; j < weight[i]; j++) {
-              drawArray.push(topic[i]);
-              noArray.push(no[i]);
-              disArray.push(dislike[i]);
-              likeArray.push(like[i]);
-              featuredArray.push(featured[i]);
+          for (var i = 0; i < data.values.length; i++){
+               topic[i] = data.values[i][2];
+               // group[i] = data.feed.entry[i].gsx$group['$t'];
+               // group2[i] = data.feed.entry[i].gsx$group2['$t'];
+               // estTime[i]= data.feed.entry[i].gsx$time['$t'];
+               featured[i]= data.values[i][12];
+               like[i]= data.values[i][7];
+               dislike[i]= data.values[i][8];
+               weight[i]= data.values[i][9];
+               no[i]= data.values[i][10];
 
-            }
-      }
-      // getQuote();
-      });
+               for (var j = 0; j < weight[i]; j++) {
+                 drawArray.push(topic[i]);
+                 noArray.push(no[i]);
+                 disArray.push(dislike[i]);
+                 likeArray.push(like[i]);
+                 featuredArray.push(featured[i]);
+
+               }
+         }
+
+     });
 
 
 
