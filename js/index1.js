@@ -71,7 +71,7 @@ function inIframe() {
 
      var randomquote = 0;
      var randomcolor = "";
-     var currentQuote = "點擊「換一題」，有趣的對話就此開始...";
+     var currentQuote = "點擊「換一題」，讓意想不到的對話就此展開...";
 
 
 
